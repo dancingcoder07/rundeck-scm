@@ -20,6 +20,7 @@
 
 echo $RD_OPTION_APPROVAL
 
+echo "Hello Universe!"
 case $RD_OPTION_APPROVAL in
 
   approve)
