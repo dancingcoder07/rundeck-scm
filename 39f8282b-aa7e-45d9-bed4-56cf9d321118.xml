@@ -1,0 +1,64 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <id>39f8282b-aa7e-45d9-bed4-56cf9d321118</id>
+    <loglevel>INFO</loglevel>
+    <name>Request-For-Approval</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Slack-Notification-For-Approval</description>
+        <script><![CDATA[#!/bin/bash
+
+echo "Sending a custom notification to slack"
+
+cat << EOF > pyscript.py
+#!/usr/bin/python
+import json
+import requests
+
+webhook_url = 'https://hooks.slack.com/services/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'
+slack_data = {
+    "text": "Approve/Reject The Plan",
+    "blocks": [
+    	{
+    		"type": "section",
+    		"text": {
+    			"type": "mrkdwn",
+    			"text": "Click here to approve : <https://hgox9eb5pi.execute-api.us-east-1.amazonaws.com/dev/approve?testkey=testvalue|Approve>"
+    		}
+    	},
+    	{
+    		"type": "section",
+    		"text": {
+    			"type": "mrkdwn",
+    			"text": "Click here to reject : <https://hgox9eb5pi.execute-api.us-east-1.amazonaws.com/dev/reject|Reject>"
+    		}
+    	}
+    ]
+}
+
+response = requests.post(
+    webhook_url, data=json.dumps(slack_data),
+    headers={'Content-Type': 'application/json'}
+)
+if response.status_code != 200:
+    raise ValueError(
+        'Request to slack returned an error %s, the response is:\n%s'
+        % (response.status_code, response.text)
+    )
+EOF
+
+chmod 755 pyscript.py
+
+./pyscript.py]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>39f8282b-aa7e-45d9-bed4-56cf9d321118</uuid>
+  </job>
+</joblist>

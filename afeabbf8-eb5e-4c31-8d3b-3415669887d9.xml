@@ -1,0 +1,40 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='approval' value='${globals.ami}' />
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <id>afeabbf8-eb5e-4c31-8d3b-3415669887d9</id>
+    <loglevel>INFO</loglevel>
+    <name>HelloWorld</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <script><![CDATA[#!/bin/bash
+
+echo $RD_OPTION_APPROVAL
+
+case $RD_OPTION_APPROVAL in
+
+  approve)
+    echo "Provisioning Approved!"
+    ;;
+
+  reject)
+    echo "Provisioning Rejected!"
+    ;;
+    
+esac
+# done]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>afeabbf8-eb5e-4c31-8d3b-3415669887d9</uuid>
+  </job>
+</joblist>
